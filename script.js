@@ -2,16 +2,15 @@ const btn = document.querySelector('.btn-get-posts');
 const btnAddPost = document.querySelector('.btn-add-post');
 const container = document.querySelector('.container');
 
-
 function getPosts(cb) {
     const xhr = new XMLHttpRequest();
-    xhr.open("GET", "http://api.weatherstack.com/current?access_key=a54d1451af691342e975fde0186820bf&query=Moscow");
-    xhr.addEventListener("load", () => {
+    xhr.open('GET', 'https://jsonplaceholder.typicode.com/posts');
+    xhr.addEventListener('load', () => {
         const response = JSON.parse(xhr.responseText);
         cb(response);
     });
 
-    xhr.addEventListener("error", () => {
+    xhr.addEventListener('error', () => {
         console.log('error');
     });
 
