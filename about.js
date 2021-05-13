@@ -1,3 +1,4 @@
+// Custom Http Module
 function customHttp() {
     return {
         get(url, cb) {
@@ -55,7 +56,11 @@ function customHttp() {
 
 const http = customHttp();
 
+const newService = (function () {
+    const apiKey = "a54d1451af691342e975fde0186820bf";
+    const apiUrl = "http://api.weatherstack.com/current?access_key=a54d1451af691342e975fde0186820bf&query=Moscow";
+})()
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     M.AutoInit();
 });
