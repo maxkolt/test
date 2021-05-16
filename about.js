@@ -56,17 +56,17 @@ function customHttp() {
 
 const http = customHttp();
 
-const newsService = (function () {
+const weatherService = (function () {
     //const apiKey = "a54d1451af691342e975fde0186820bf";
     const apiUrl = "http://api.weatherstack.com/current?access_key=a54d1451af691342e975fde0186820bf&query=Moscow";
 
-    return{
-        topHeadLines(country = 'Russia', cb){
+    return {
+        topHeadLines(country = 'Russia', cb) {
             http.get(`${apiUrl}/current?country=${country}`, cb);
         },
-       // everything(query, cb) {
-         //   http.get(`${apiUrl}/current?country=${country}&apiKey=${apiKey}`);
-       // }
+        // everything(query, cb) {
+        //   http.get(`${apiUrl}/current?country=${country}&apiKey=${apiKey}`);
+        // }
     }
 })()
 
@@ -76,9 +76,60 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function loadweather() {
-newsService.topHeadLines('ru', onGetResponse);
+    weatherService.topHeadLines('ru', onGetResponse);
 }
 
 function onGetResponse(err, res) {
-console.log(res);
+    renderWeather(res.current);
+}
+
+function renderWeather(weather) {
+const weatherContainer = document.querySelector('.news-container .row');
+
+    weather.forEach(weatherItem => {
+        const el = weatherTemplate(weatherItem);
+    })
+}
+
+function weatherTemplate({ urlToImage, title, url, description }) {
+    return `
+    <div class="col s12">
+      <div class="card">
+        <div class="card-image">
+          <img src="${urlToImage}">
+          <span class="card-title">${title || ''}</span>
+        </div>
+        <div class="card-content">
+          <p>${description || ''}</p>
+        </div>
+        <div class="card-action">
+          <a href="${url}">Read more</a>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function showAlert(msg, type = 'success') {
+    M.toast({ html: msg, classes: type });
+}
+
+//  Show loader function
+function showLoader() {
+    document.body.insertAdjacentHTML(
+        'afterbegin',
+        `
+    <div class="progress">
+      <div class="indeterminate"></div>
+    </div>
+  `,
+    );
+}
+
+// Remove loader function
+function removePreloader() {
+    const loader = document.querySelector('.progress');
+    if (loader) {
+        loader.remove();
+    }
 }
