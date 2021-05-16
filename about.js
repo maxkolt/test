@@ -1,6 +1,3 @@
-
-
-// Custom Http Module
 function customHttp() {
     return {
         get(url, cb) {
@@ -56,26 +53,25 @@ function customHttp() {
     };
 }
 
-// Init http module
 const http = customHttp();
 
 const newsService = (function () {
     //const apiKey = '9c27b0f722b84da5a08312d2b125351b';
-    const apiUrl = 'const apiUrl = "http://api.weatherstack.com/current?access_key=a54d1451af691342e975fde0186820bf&query=Moscow";';
+    const apiUrl = "http://api.weatherstack.com/current?access_key=a54d1451af691342e975fde0186820bf&query=Moscow"
 
     return {
         topHeadlines(country = 'Russia', cb) {
             http.get(
-                http.get(`${apiUrl}/current?country=${country}`, cb)
+                (`${apiUrl}/current?country=${country}`, cb)
             )
         },
-        //everything(query, cb) {
-        //  http.get(`${apiUrl}/everything?q=${query}&apiKey=${apiKey}`, cb);
-        // },
+       // everything(query, cb) {
+         //   http.get(`${apiUrl}/everything?q=${query}`, cb);
+        //},
     };
 })();
 
-// Elements
+
 const form = document.forms['newsControls'];
 const countrySelect = form.elements['country'];
 const searchInput = form.elements['search'];
@@ -85,13 +81,13 @@ form.addEventListener('submit', e => {
     loadNews();
 });
 
-//  init selects
+
 document.addEventListener('DOMContentLoaded', function () {
-    M.AutoInit();
+   // M.AutoInit();
     loadNews();
 });
 
-// Load news function
+
 function loadNews() {
     showLoader();
 
@@ -101,11 +97,12 @@ function loadNews() {
     if (!searchText) {
         newsService.topHeadlines(country, onGetResponse);
     } else {
-        newsService.everything(searchText, onGetResponse);
+        console.log('Error')
+        //newsService.everything(searchText, onGetResponse);
     }
 }
 
-// Function on get response from server
+
 function onGetResponse(err, res) {
     removePreloader();
 
@@ -115,14 +112,13 @@ function onGetResponse(err, res) {
     }
 
     if (!res.articles.length) {
-        // show empty message
         return;
     }
 
     renderNews(res.articles);
 }
 
-// Function render news
+
 function renderNews(news) {
     const newsContainer = document.querySelector('.news-container .row');
     if (newsContainer.children.length) {
@@ -138,9 +134,8 @@ function renderNews(news) {
     newsContainer.insertAdjacentHTML('afterbegin', fragment);
 }
 
-// Function clear container
+
 function clearContainer(container) {
-    // container.innerHTML = '';
     let child = container.lastElementChild;
     while (child) {
         container.removeChild(child);
@@ -148,7 +143,6 @@ function clearContainer(container) {
     }
 }
 
-// News item template function
 function newsTemplate({weather_icons, temperature, url, location}) {
     return `
     <div class="col s12">
@@ -173,7 +167,6 @@ function showAlert(msg, type = 'success') {
     M.toast({html: msg, classes: type});
 }
 
-//  Show loader function
 function showLoader() {
     document.body.insertAdjacentHTML(
         'afterbegin',
@@ -185,7 +178,6 @@ function showLoader() {
     );
 }
 
-// Remove loader function
 function removePreloader() {
     const loader = document.querySelector('.progress');
     if (loader) {
