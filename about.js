@@ -72,4 +72,5 @@ const newsService = (function () {
 
 document.addEventListener('DOMContentLoaded', function () {
     M.AutoInit();
+    loadweather();
 });
