@@ -85,22 +85,25 @@ function onGetResponse(err, res) {
 
 function renderWeather(weather) {
 const weatherContainer = document.querySelector('.news-container .row');
+let fragment = '';
 
     weather.forEach(weatherItem => {
         const el = weatherTemplate(weatherItem);
+        fragment += el
     })
+    console.log(fragment);
 }
 
-function weatherTemplate({ urlToImage, title, url, description }) {
+function weatherTemplate({ weather_icons, temperature, url, location }) {
     return `
     <div class="col s12">
       <div class="card">
         <div class="card-image">
-          <img src="${urlToImage}">
-          <span class="card-title">${title || ''}</span>
+          <img src="${weather_icons}">
+          <span class="card-title">${temperature || ''}</span>
         </div>
         <div class="card-content">
-          <p>${description || ''}</p>
+          <p>${location || ''}</p>
         </div>
         <div class="card-action">
           <a href="${url}">Read more</a>
