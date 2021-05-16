@@ -57,12 +57,12 @@ function customHttp() {
 const http = customHttp();
 
 const newsService = (function () {
-    const apiKey = "a54d1451af691342e975fde0186820bf";
+    //const apiKey = "a54d1451af691342e975fde0186820bf";
     const apiUrl = "http://api.weatherstack.com/current?access_key=a54d1451af691342e975fde0186820bf&query=Moscow";
 
     return{
-        topHeadLines(country = 'Ru', cb){
-            http.get(`${apiUrl}/current?country=${country}&apiKey=${apiKey}`, cb);
+        topHeadLines(country = 'Russia', cb){
+            http.get(`${apiUrl}/current?country=${country}`, cb);
         },
        // everything(query, cb) {
          //   http.get(`${apiUrl}/current?country=${country}&apiKey=${apiKey}`);
