@@ -1,3 +1,5 @@
+
+
 // Custom Http Module
 function customHttp() {
     return {
@@ -54,47 +56,100 @@ function customHttp() {
     };
 }
 
+// Init http module
 const http = customHttp();
 
-const weatherService = (function () {
-    //const apiKey = "a54d1451af691342e975fde0186820bf";
-    const apiUrl = "http://api.weatherstack.com/current?access_key=a54d1451af691342e975fde0186820bf&query=Moscow";
+const newsService = (function () {
+    //const apiKey = '9c27b0f722b84da5a08312d2b125351b';
+    const apiUrl = 'const apiUrl = "http://api.weatherstack.com/current?access_key=a54d1451af691342e975fde0186820bf&query=Moscow";';
 
     return {
-        topHeadLines(country = 'Russia', cb) {
-            http.get(`${apiUrl}/current?country=${country}`, cb);
+        topHeadlines(country = 'Russia', cb) {
+            http.get(
+                http.get(`${apiUrl}/current?country=${country}`, cb)
+            )
         },
-        // everything(query, cb) {
-        //   http.get(`${apiUrl}/current?country=${country}&apiKey=${apiKey}`);
-        // }
-    }
-})()
+        //everything(query, cb) {
+        //  http.get(`${apiUrl}/everything?q=${query}&apiKey=${apiKey}`, cb);
+        // },
+    };
+})();
 
-document.addEventListener('DOMContentLoaded', function () {
-    M.AutoInit();
-    loadweather();
+// Elements
+const form = document.forms['newsControls'];
+const countrySelect = form.elements['country'];
+const searchInput = form.elements['search'];
+
+form.addEventListener('submit', e => {
+    e.preventDefault();
+    loadNews();
 });
 
-function loadweather() {
-    weatherService.topHeadLines('ru', onGetResponse);
+//  init selects
+document.addEventListener('DOMContentLoaded', function () {
+    M.AutoInit();
+    loadNews();
+});
+
+// Load news function
+function loadNews() {
+    showLoader();
+
+    const country = countrySelect.value;
+    const searchText = searchInput.value;
+
+    if (!searchText) {
+        newsService.topHeadlines(country, onGetResponse);
+    } else {
+        newsService.everything(searchText, onGetResponse);
+    }
 }
 
+// Function on get response from server
 function onGetResponse(err, res) {
-    renderWeather(res.current);
+    removePreloader();
+
+    if (err) {
+        showAlert(err, 'error-msg');
+        return;
+    }
+
+    if (!res.articles.length) {
+        // show empty message
+        return;
+    }
+
+    renderNews(res.articles);
 }
 
-function renderWeather(weather) {
-const weatherContainer = document.querySelector('.news-container .row');
-let fragment = '';
+// Function render news
+function renderNews(news) {
+    const newsContainer = document.querySelector('.news-container .row');
+    if (newsContainer.children.length) {
+        clearContainer(newsContainer);
+    }
+    let fragment = '';
 
-    weather.forEach(weatherItem => {
-        const el = weatherTemplate(weatherItem);
-        fragment += el
-    })
-    console.log(fragment);
+    news.forEach(newsItem => {
+        const el = newsTemplate(newsItem);
+        fragment += el;
+    });
+
+    newsContainer.insertAdjacentHTML('afterbegin', fragment);
 }
 
-function weatherTemplate({ weather_icons, temperature, url, location }) {
+// Function clear container
+function clearContainer(container) {
+    // container.innerHTML = '';
+    let child = container.lastElementChild;
+    while (child) {
+        container.removeChild(child);
+        child = container.lastElementChild;
+    }
+}
+
+// News item template function
+function newsTemplate({weather_icons, temperature, url, location}) {
     return `
     <div class="col s12">
       <div class="card">
@@ -113,8 +168,9 @@ function weatherTemplate({ weather_icons, temperature, url, location }) {
   `;
 }
 
+
 function showAlert(msg, type = 'success') {
-    M.toast({ html: msg, classes: type });
+    M.toast({html: msg, classes: type});
 }
 
 //  Show loader function
