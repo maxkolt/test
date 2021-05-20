@@ -25,7 +25,7 @@ function createPost(body, cb) {
         cb(response);
     });
 
-    xhr.setRequestHeader('Content-type', 'application/json; charset=UTF-8');
+    xhr.setRequestHeader('Content-type', 'application/dog1.json; charset=UTF-8');
 
     xhr.addEventListener('error', () => {
         console.log('error');
@@ -177,7 +177,7 @@ myHttp.post(
         body: 'bar',
         userId: 1,
     },
-    { 'Content-Type': 'application/json', 'x-auth': 'asd9387ydh9iuashdis' },
+    { 'Content-Type': 'application/dog1.json', 'x-auth': 'asd9387ydh9iuashdis' },
     (err, res) => {
         console.log(err, res);
     },
