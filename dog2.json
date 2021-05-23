@@ -1,0 +1,12 @@
+{
+  "id": 2,
+  "name": "Миша",
+  "age": "2",
+  "body": "тактильный",
+  "character": {
+    "ест": "МАЛО",
+    "sleep": true
+  },
+  "friends": [],
+  "enemies": [1]
+}
